@@ -11,25 +11,27 @@ CycleCount = 10000
 ##Setup
 #sigmoid function
 def nonlin(x, deriv=False):
+    """"""
+
         if(deriv==True):
             return x*(1-x)
         return 1/(1+np.exp(-x))
 
 # input dataset
-X = np.array(InputArray)
+Import = np.array(InputArray)
 
 # output dataset
-Y = np.array(OutputArray).T
+Goal = np.array(OutputArray).T
 
 ##Logic
 #initialize weights randomly with mean 0
-syn0 = 2*np.random.random((3,1)) - 1
+Seed = 2*np.random.random((3,1)) - 1
 
 for iter in range(CycleCount):
 
     # forward propagation
-    l0 = X
-    l1 = nonlin(np.dot(l0,syn0))
+    l0 = Import
+    l1 = nonlin(np.dot(l0,Seed))
 
     # how much did we miss?
     l1_error = Y - l1
