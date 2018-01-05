@@ -75,9 +75,11 @@ class Logging:
 ##Functions
 ###########
 def nonlin(x, deriv=False):
+    """Created a standard Sigmoid function
 
-    This is a sigmoid function
-    (input,True=return derivative)
+    Args:
+        x (float): The first parameter.
+        param2 (str): The second parameter."""
     if(deriv==True):
         return x*(1-x)
     return 1/(1+np.exp(-x))
