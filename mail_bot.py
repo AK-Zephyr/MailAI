@@ -8,16 +8,13 @@ Example:
     Import parsed email data and output a suggested responce.
 
 Attributes:
-    module_level_variable1 (int): Module level variables may be documented in
-        either the ``Attributes`` section of the module docstring, or in an
-        inline docstring immediately following the variable.
+    INPUT_ARRAY (array): Input an array formatted for numpy.array.
+    The program will automatically scale based on the size of the input.
 
-        Either form is acceptable, but the two should not be mixed. Choose
-        one convention to document module level variables and be consistent
-        with it.
+    OUTPUT_ARRAY (array): The known or suggested outcome of the supervised learning.
 
 Todo:
-    * For module TODOs
+    * Add Input/Output scaling
     * You have to also use ``sphinx.ext.todo`` extension
 
 .. _Google Python Style Guide:
@@ -27,24 +24,26 @@ Todo:
 import numpy as np
 
 
-
 ###########
 ##Variables
 ###########
 #define seed for consistent results
 np.random.seed(1)
 #numpy array
-input_array = [[0,0,1],
-                [0,1,1],
-                [1,0,1],
-                [1,1,1]]
+INPUT_ARRAY = [[0, 0, 1],
+               [0, 1, 1],
+               [1, 0, 1],
+               [1, 1, 1]]
 #numpy array -- will be transposed
-output_array = [[0,0,1,1]]
+OUTPUT_ARRAY = [[0,
+                 0,
+                 1,
+                 1]]
 
 #how many iternations
-cycle_count = 10000
+CYCLE_COUNT = 10000
 #log per how many cycles
-log_amount = 100
+LOG_AMOUNT = 100
 
 
 
@@ -52,10 +51,20 @@ log_amount = 100
 ##Classes
 ###########
 class Logging:
+    """Create a txt document with write default.
+
+    Attributes:
+            name (str): Name of log file.
+    """
     def __init__(self, name):
+        """Initializes file object with 'w' permissions.
+        """
         self.name = name
-        self.document = open(str(self.name) + ".txt", "w")
+        self.document = open(self.name, "w")
+
     def write(self, msg):
+        """
+        """
         self.document.write(str(msg) + "\n")
     def close(self):
         self.document.close()
@@ -66,8 +75,9 @@ class Logging:
 ##Functions
 ###########
 def nonlin(x, deriv=False):
-    """This is a sigmoid function
-    (input,True=return derivative)"""
+
+    This is a sigmoid function
+    (input,True=return derivative)
     if(deriv==True):
         return x*(1-x)
     return 1/(1+np.exp(-x))
@@ -78,8 +88,8 @@ def nonlin(x, deriv=False):
 ##Logging
 ###########
 #set up instance of each output logs
-error_correction = Logging(name="error_correction")
-seed = Logging(name="seed")
+error_correction = Logging(name="error_correction.txt")
+seed = Logging(name="seed.txt")
 
 
 
@@ -87,9 +97,9 @@ seed = Logging(name="seed")
 ##Variable Setup
 ###########
 # input dataset
-data = np.array(input_array)
+data = np.array(INPUT_ARRAY)
 # output dataset
-goal = np.array(output_array).T
+goal = np.array(OUTPUT_ARRAY).T
 
 
 
@@ -102,7 +112,7 @@ array_seed = 2*np.random.random((3,1)) - 1
 seed.write("Array Seed")
 seed.write(array_seed)
 
-for iter in range(cycle_count):
+for step in range(CYCLE_COUNT):
     # forward propagation
     knowledge = array_seed
     l0 = data
@@ -116,7 +126,7 @@ for iter in range(cycle_count):
     knowledge += np.dot(l0.T,l1_delta)
 
     #Logging
-    if not (iter % log_amount):
+    if not (step % LOG_AMOUNT):
         error_correction.write("Cycle Count: " + str(iter))
         error_correction.write(l1_error)
         error_correction.write("")
