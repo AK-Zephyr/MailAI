@@ -1,7 +1,29 @@
-#This Script is to test my ability to recall the basic functions of a NN from memory.
-###########
-##Imports
-###########
+# -*- coding: utf-8 -*-
+"""Email Neural Net
+
+This program will take an input of arrays and and perform supervized learning
+to predict against a known output.
+
+Example:
+    Import parsed email data and output a suggested responce.
+
+Attributes:
+    module_level_variable1 (int): Module level variables may be documented in
+        either the ``Attributes`` section of the module docstring, or in an
+        inline docstring immediately following the variable.
+
+        Either form is acceptable, but the two should not be mixed. Choose
+        one convention to document module level variables and be consistent
+        with it.
+
+Todo:
+    * For module TODOs
+    * You have to also use ``sphinx.ext.todo`` extension
+
+.. _Google Python Style Guide:
+   http://google.github.io/styleguide/pyguide.html
+
+"""
 import numpy as np
 
 
@@ -9,6 +31,7 @@ import numpy as np
 ###########
 ##Variables
 ###########
+#define seed for consistent results
 np.random.seed(1)
 #numpy array
 input_array = [[0,0,1],
@@ -38,6 +61,7 @@ class Logging:
         self.document.close()
 
 
+
 ###########
 ##Functions
 ###########
@@ -56,6 +80,8 @@ def nonlin(x, deriv=False):
 #set up instance of each output logs
 error_correction = Logging(name="error_correction")
 seed = Logging(name="seed")
+
+
 
 ###########
 ##Variable Setup
@@ -89,7 +115,7 @@ for iter in range(cycle_count):
     # update weights
     knowledge += np.dot(l0.T,l1_delta)
 
-    Logging
+    #Logging
     if not (iter % log_amount):
         error_correction.write("Cycle Count: " + str(iter))
         error_correction.write(l1_error)
